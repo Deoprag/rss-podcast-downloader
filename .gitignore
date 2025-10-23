@@ -1,2 +1,4 @@
 venv/*
 *.exe
+*.db
+__pycache__

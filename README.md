@@ -12,6 +12,7 @@ The goal is to provide a clean, interface for consuming podcast feeds, allowing 
 - **Authentication:** Supports feeds protected with basic authentication or URL token authentication `url.com/rss/{token}`.
 - **Individual Download:** Download any episode with a single click.
 - **Batch Download:** Download all filtered episodes using the **"Download all"** button.
+- **Save & Load Configurations:** Store podcast details (name, URL, folder, credentials) in a local SQLite database for quick access.
 - **Queue Management:** Batch downloads are queued (🕓) and processed sequentially.
 - **Cancellation:** Cancel individual downloads or the entire batch at any time.
 - **Progress Indicators:**
@@ -20,8 +21,8 @@ The goal is to provide a clean, interface for consuming podcast feeds, allowing 
 - **Dynamic Search:** Filter episodes by title or description in real-time.
 - **Smart Sorting:** Sort episodes by:
   - **Newest** (default)
-  - **Oldest**
-  *(If episode numbers like `#123` or `123 -` are found, sorting is based on them; otherwise, the feed’s chronological order is used.)*
+  - **Oldest** (If episode numbers like `#123` or `123 -` are found, sorting is based on them; otherwise, the feed’s chronological order is used.)
+  > **Note:** Sorting uses episode numbers found after a hash (e.g., "Title #123"), at the start (e.g., "123 - Title"),  or at the end (e.g., "Title - 123") of the title (in the given order). If no number is detected in these patterns, the original feed order is used.
 - **File Checking:** Already-downloaded episodes are marked with 📁 and skipped.
 - **Folder Selection:** GUI for selecting the target download folder.
 
@@ -32,6 +33,7 @@ The goal is to provide a clean, interface for consuming podcast feeds, allowing 
 - **requests** — HTTP requests (fetch feed and files)
 - **threading** — Keeps the UI responsive during downloads
 - **xml.etree.ElementTree** — Parses RSS XML data
+- **sqlite3** — Local database for saving configurations.
 
 ## ⚙️ How to Run
 
@@ -69,20 +71,28 @@ The goal is to provide a clean, interface for consuming podcast feeds, allowing 
 With the virtual environment activated, run:
 
    ```
-   $ python3 rss-podcast-downloader.py
+   $ python3 main.py
    ```
+   > **Note:** A `podcasts.db` file will be created in the same directory to store saved configurations.
 
 ### 🖥️ Interface Guide
 
-1. **Destination Folder:** Click **“Browse...”** and select where episodes will be saved.
-2. **Feed URL:** Paste the full RSS feed URL.
-3. **Authentication (Optional):** Fill **User** and **Password** if required.
-4. **Load:** Click **“Load episodes”** to fetch and list all episodes.
-5. **Search:** Use the **“Search...”** bar to filter episodes by title or description.
-6. **Sort:** Choose **“Order by”** to change sorting mode.
-7. **Download:**
-   - **Individual:** Click the green ⬇️ icon next to an episode.
-   - **Batch:** Click the blue **“Download all”** button to download all visible episodes.
+1.  **Load Saved Podcast (Optional):** Select a podcast from the **"Saved Podcasts"** dropdown to automatically fill in its details (URL, folder, credentials).
+2.  **Destination Folder:** If not loading, click **“Browse...”** and select where episodes will be saved.
+3.  **Feed URL:** Paste the full RSS feed URL.
+4.  **Podcast Name (for Saving):** Enter a unique name for this podcast configuration if you plan to save it. This field is required to **Save**.
+5.  **Authentication (Optional):** Fill **User** and **Password** if the feed requires them.
+6.  **Manage Configuration:**
+    * **Save:** Click **"Save"** to store or update the current configuration (Name, URL, Folder, Credentials) in the database.
+    * **Delete:** If a saved podcast is selected, click **"Delete"** to remove it permanently.
+    * **Clear:** Click **"Clear"** to reset all form fields and the episode list.
+7.  **Load Episodes:** Click **“Load episodes”** to fetch and list all episodes from the specified feed URL.
+8.  **Search:** Use the **“Search...”** bar to filter episodes by title or description.
+9.  **Sort:** Choose **“Order by”** to change the sorting mode (Newest/Oldest).
+10. **Download:**
+    * **Individual:** Click the green ⬇️ icon next to an episode.
+    * **Batch:** Click the blue **“Download all”** button to download all *currently visible* episodes.
+11. **List:** You can click a podcast to see a general info of it.
 
 ### 🪶 License
 
