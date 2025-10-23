@@ -129,11 +129,11 @@ def main(page: ft.Page):
 
     sidebar_title = ft.Text("", weight="bold", size=16, expand=True, no_wrap=True, overflow=ft.TextOverflow.ELLIPSIS)
     sidebar_image = ft.Image(src="", height=200, fit=ft.ImageFit.CONTAIN, border_radius=5)
-    sidebar_pub_date = ft.Text("", size=12, color=ft.Colors.with_opacity(0.7, ft.Colors.BLACK))
-    sidebar_duration = ft.Text("", size=12, color=ft.Colors.with_opacity(0.7, ft.Colors.BLACK))
-    sidebar_author = ft.Text("", size=12, italic=True)
-    sidebar_link = ft.Text("", size=12, selectable=True,italic=True)
-    sidebar_description = ft.Text("", selectable=True) # Descrição ficará no final
+    sidebar_pub_date = ft.Text("", size=14, selectable=True)
+    sidebar_duration = ft.Text("", size=14, selectable=True)
+    sidebar_author = ft.Text("", size=14, selectable=True, italic=True)
+    sidebar_link = ft.Text("", size=14, selectable=True, italic=True)
+    sidebar_description = ft.Text("", selectable=True)
 
     sidebar_column = ft.Column(
         [
@@ -152,16 +152,19 @@ def main(page: ft.Page):
             ft.Row([ft.Icon(ft.Icons.PERSON_OUTLINE, size=14), sidebar_author]),
             ft.Row([ft.Icon(ft.Icons.LINK, size=14), sidebar_link]),
             ft.Divider(height=10),
-            ft.Container(
-                content=ft.Column(
-                    [sidebar_description],
-                    scroll=ft.ScrollMode.ADAPTIVE
-                ),
-                expand=True,
-                padding=ft.padding.only(top=5)
-            )
+            ft.Row([
+                ft.Container(
+                    content=ft.Column(
+                        [sidebar_description],
+                        scroll=ft.ScrollMode.ADAPTIVE
+                    ),
+                    expand=True,
+                    padding=ft.padding.only(top=5)
+                )],
+            ),
+            
         ],
-        expand=True,
+        expand=False,
         visible=False,
         width=350,
         spacing=5,
