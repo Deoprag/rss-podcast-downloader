@@ -406,7 +406,7 @@ def on_search(e):
 def sort_list_changed(e):
     if not all_episode_controls_master:
         return
-
+    
     is_reversed = (ui_refs["dd_sort"].value == "DESC")
     all_episode_controls_master.sort(key=lambda x: x.ep_number, reverse=is_reversed)
 

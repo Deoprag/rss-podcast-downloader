@@ -52,7 +52,8 @@ class EpisodeControl(ft.Container):
             icon=ft.Icons.DOWNLOAD,
             tooltip="Download this episode",
             icon_color=ft.Colors.GREEN,
-            on_click=self.individual_download_task_prevent_sidebar
+            on_click=self.individual_download_task_prevent_sidebar,
+            expand=True
         )
 
         status_content = None
@@ -77,26 +78,46 @@ class EpisodeControl(ft.Container):
             transition=ft.AnimatedSwitcherTransition.SCALE
         )
 
-        self.list_tile = ft.ListTile(
-            leading=ft.Image(
-                src=self.image_src,
-                width=80,
-                height=80,
-                fit=ft.ImageFit.COVER,
-                border_radius=5
-            ),
-            title=ft.Text(self.title, weight="bold", max_lines=2, overflow=ft.TextOverflow.ELLIPSIS),
-            subtitle=ft.Text(self.description, max_lines=3, overflow=ft.TextOverflow.ELLIPSIS),
-            trailing=self.trailing_control
+        text_content = ft.Column(
+            [
+                ft.Text(self.title, weight="bold", max_lines=1, overflow=ft.TextOverflow.ELLIPSIS),
+                ft.Text(self.description, max_lines=3, overflow=ft.TextOverflow.ELLIPSIS)
+            ],
+            spacing=4,
+            alignment=ft.MainAxisAlignment.CENTER,
+            expand=True
         )
 
-        self.content = ft.Container(
-            content=self.list_tile,
-            height=110,
-            border_radius=5,
-            ink=True,
-            on_click=self.handle_click
+        trailing_content_container = ft.Container(
+            content=self.trailing_control,
+            alignment=ft.alignment.center,
+            width=80
         )
+
+        leading_image = ft.Image(
+            src=self.image_src,
+            width=80,
+            height=80,
+            fit=ft.ImageFit.COVER,
+            border_radius=5
+        )
+
+        main_row = ft.Row(
+            [
+                leading_image,
+                text_content,
+                trailing_content_container
+            ],
+            spacing=16,
+            vertical_alignment=ft.CrossAxisAlignment.CENTER
+        )
+
+        self.content = main_row
+        self.height = 110
+        self.border_radius = 5
+        self.ink = True
+        self.on_click = self.handle_click
+        self.padding = ft.padding.symmetric(horizontal=16)
 
     def handle_click(self, e):
         logic.update_sidebar(self)

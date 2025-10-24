@@ -156,12 +156,17 @@ def main(page: ft.Page):
                 ft.Container(
                     content=ft.Column(
                         [sidebar_description],
-                        scroll=ft.ScrollMode.ADAPTIVE
+                        scroll=ft.ScrollMode.AUTO,
+                        alignment=ft.MainAxisAlignment.START,
+                        expand=True
                     ),
                     expand=True,
-                    padding=ft.padding.only(top=5)
-                )],
-            ),
+                    padding=ft.padding.only(top=5),
+                    alignment=ft.alignment.top_left
+                ),
+            ],
+            expand=True
+            )
             
         ],
         expand=False,
